@@ -8,44 +8,52 @@ import (
 	"strings"
 )
 
+var max_length = 40
+
 func main() {
 	fmt.Println("Альтернативное задание.")
-	fmt.Println("Введите строку вида 'a' + 'b', 'a' - 'b', 'a' * b, 'a' / b:")
+	for {
+		fmt.Println("Введите строку вида 'a' + 'b', 'a' - 'b', 'a' * b, 'a' / b:")
 
-	string_request := bufio.NewReader(os.Stdin)
-	saving_the_string, err := string_request.ReadString('\n')
-	saving_the_string = strings.TrimSpace(saving_the_string)
+		string_request := bufio.NewReader(os.Stdin)
+		saving_the_string, err := string_request.ReadString('\n')
+		saving_the_string = strings.TrimSpace(saving_the_string)
 
-	if err != nil {
-		panic("Error")
-	}
+		if len(saving_the_string) > 10 {
+			panic("Ошибка. Строка длинее 10 символов")
+		}
 
-	operators := []string{" + ", " - ", " * ", " / "}
-	parts, operator := check_operators(saving_the_string, operators)
+		if err != nil {
+			panic("Error")
+		}
 
-	if operator == "" {
-		panic("Ошибка связана с оператором")
-	}
+		operators := []string{" + ", " - ", " * ", " / "}
+		parts, operator := check_operators(saving_the_string, operators)
 
-	if len(parts) != 2 {
-		panic("Ошибка связана с количеством частей")
-	}
+		if operator == "" {
+			panic("Ошибка связана с оператором")
+		}
 
-	switch operator {
-	case " + ":
-		answer := calc1(saving_the_string)
-		fmt.Println(answer)
-	case " - ":
-		answer := calc2(saving_the_string)
-		fmt.Println(answer)
-	case " * ":
-		answer := calc3(saving_the_string)
-		fmt.Println(answer)
-	case " / ":
-		answer := calc4(saving_the_string)
-		fmt.Println(answer)
-	default:
-		fmt.Println("Неизвестный оператор")
+		if len(parts) != 2 {
+			panic("Ошибка связана с количеством частей")
+		}
+
+		switch operator {
+		case " + ":
+			answer := calc1(saving_the_string)
+			fmt.Println(answer)
+		case " - ":
+			answer := calc2(saving_the_string)
+			fmt.Println(answer)
+		case " * ":
+			answer := calc3(saving_the_string)
+			fmt.Println(answer)
+		case " / ":
+			answer := calc4(saving_the_string)
+			fmt.Println(answer)
+		default:
+			fmt.Println("Неизвестный оператор")
+		}
 	}
 }
 
@@ -101,9 +109,17 @@ func calc3(saving_the_string string) string {
 		panic("Ошибка связана с конвертацией")
 	}
 
+	if ss_to_num < 1 || ss_to_num > 10 {
+		panic("Ошибка. Не соответствует диапазону")
+	}
+
 	var res string
 	for i := 0; i < ss_to_num; i++ {
 		res += fs
+	}
+
+	if len(res) > max_length {
+		res = res[:max_length] + "..."
 	}
 	return res
 }
@@ -127,6 +143,10 @@ func calc4(saving_the_string string) string {
 
 	if c_ss == 0 {
 		panic("Деление на ноль")
+	}
+
+	if c_ss < 1 || c_ss > 10 {
+		panic("Ошибка. Не соответствует диапазону")
 	}
 
 	pre_res := v_fs / c_ss
