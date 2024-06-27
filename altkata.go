@@ -1,64 +1,104 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"strconv"
 	"strings"
 )
 
 func main() {
 
-	fmt.Println("Альтернативное задание.")
-	fmt.Println("Введите строку вида 'a' + 'b', 'a' - 'b', 'a' * b, 'a' / b:")
+	answer1 := calc1()
+	fmt.Println(answer1)
 
-	input := bufio.NewReader(os.Stdin)
-	saved, err := input.ReadString('\n')
+	answer2 := calc2()
+	fmt.Println(answer2)
 
-	if err != nil {
-		panic(err)
-	}
+	answer3 := calc3()
+	fmt.Println(answer3)
 
-	saved = strings.TrimSpace(saved)
+	answer4 := calc4()
+	fmt.Println(answer4)
 
-	if saved == "exit" {
-		fmt.Println("Вы покинули проект")
-		os.Exit(0)
-	}
-
-	parts, operator, err := split_input(saved)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(parts[0])
-	fmt.Println(operator)
-	fmt.Println(parts[1])
 }
 
-func split_input(input string) ([2]string, string, error) {
-
-	operators := []string{" + ", " - ", " * ", " / "}
-
-	for _, operator := range operators {
-		if strings.Contains(input, operator) {
-			parts := strings.SplitN(input, operator, 2)
-
-			//fmt.Println(parts[0], operator, parts[1])
-
-			for _, oper := range operators {
-				if strings.Contains(parts[1], oper) {
-					panic("Неправильное выражение")
-				}
-			}
-
-			return [2]string{strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1])}, operator, nil
-		}
+// конкатенация
+func calc1() string {
+	str1 := "Hello, my name is + Yan"
+	parts := strings.SplitN(str1, " + ", 2)
+	if len(parts) != 2 {
+		panic("Error")
 	}
+	fs := parts[0]
+	ss := parts[1]
 
-	panic("Оператор не найден")
+	res := fs + ss
+	return (res)
 }
 
-//  func calc(parts []string, operator string) (string, error) {
-// 	array := [3]string {parts[0], operator, parts[1]}
-//  }
+// вычитание
+func calc2() string {
+	str1 := "Yan and Mila - Mir"
+	parts := strings.SplitN(str1, " - ", 2)
+	if len(parts) != 2 {
+		panic("Error")
+	}
+
+	fs := parts[0]
+	ss := parts[1]
+
+	res := strings.Replace(fs, ss, "", -1)
+	return res
+}
+
+// умножение
+func calc3() string {
+	str1 := "Hello, mama * 4"
+	parts := strings.SplitN(str1, " * ", 2)
+	if len(parts) != 2 {
+		panic("Error")
+	}
+
+	fs := parts[0]
+	ss := parts[1]
+
+	ss_to_num, err := strconv.Atoi(ss)
+	if err != nil {
+		panic("Error")
+	}
+
+	var res string
+	for i := 0; i < ss_to_num; i++ {
+		res += fs
+	}
+	return res
+}
+
+// деление
+func calc4() string {
+	str1 := "Never give up / 4"
+	parts := strings.SplitN(str1, " / ", 2)
+
+	if len(parts) != 2 {
+		panic("Error")
+	}
+
+	fs := parts[0]
+	ss := parts[1]
+
+	v_fs := len(fs)
+
+	c_ss, err := strconv.Atoi(ss)
+
+	if err != nil {
+		panic("Error")
+	}
+
+	if c_ss == 0 {
+		panic("Error")
+	}
+
+	pre_res := v_fs / c_ss
+	res := str1[:pre_res]
+	return res
+}
