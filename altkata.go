@@ -1,47 +1,82 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
+	fmt.Println("Альтернативное задание.")
+	fmt.Println("Введите строку вида 'a' + 'b', 'a' - 'b', 'a' * b, 'a' / b:")
 
-	answer1 := calc1()
-	fmt.Println(answer1)
+	string_request := bufio.NewReader(os.Stdin)
+	saving_the_string, err := string_request.ReadString('\n')
+	saving_the_string = strings.TrimSpace(saving_the_string)
 
-	answer2 := calc2()
-	fmt.Println(answer2)
+	if err != nil {
+		panic("Error")
+	}
 
-	answer3 := calc3()
-	fmt.Println(answer3)
+	operators := []string{" + ", " - ", " * ", " / "}
+	parts, operator := check_operators(saving_the_string, operators)
 
-	answer4 := calc4()
-	fmt.Println(answer4)
+	if operator == "" {
+		panic("Ошибка связана с оператором")
+	}
 
+	if len(parts) != 2 {
+		panic("Ошибка связана с количеством частей")
+	}
+
+	switch operator {
+	case " + ":
+		answer := calc1(saving_the_string)
+		fmt.Println(answer)
+	case " - ":
+		answer := calc2(saving_the_string)
+		fmt.Println(answer)
+	case " * ":
+		answer := calc3(saving_the_string)
+		fmt.Println(answer)
+	case " / ":
+		answer := calc4(saving_the_string)
+		fmt.Println(answer)
+	default:
+		fmt.Println("Неизвестный оператор")
+	}
+}
+
+// поиск операторов в введенной строке
+func check_operators(saving_the_string string, operators []string) ([]string, string) {
+	for _, operator := range operators {
+		if strings.Contains(saving_the_string, operator) {
+			return strings.SplitN(saving_the_string, operator, 2), operator
+		}
+	}
+	return []string{saving_the_string}, ""
 }
 
 // конкатенация
-func calc1() string {
-	str1 := "Hello, my name is + Yan"
-	parts := strings.SplitN(str1, " + ", 2)
+func calc1(saving_the_string string) string {
+	parts := strings.SplitN(saving_the_string, " + ", 2)
 	if len(parts) != 2 {
-		panic("Error")
+		panic("Ошибка связана с количеством частей в calc1")
 	}
 	fs := parts[0]
 	ss := parts[1]
 
-	res := fs + ss
-	return (res)
+	res := fs + " " + ss
+	return res
 }
 
 // вычитание
-func calc2() string {
-	str1 := "Yan and Mila - Mir"
-	parts := strings.SplitN(str1, " - ", 2)
+func calc2(saving_the_string string) string {
+	parts := strings.SplitN(saving_the_string, " - ", 2)
 	if len(parts) != 2 {
-		panic("Error")
+		panic("Ошибка связана с количеством частей в calc2")
 	}
 
 	fs := parts[0]
@@ -52,11 +87,10 @@ func calc2() string {
 }
 
 // умножение
-func calc3() string {
-	str1 := "Hello, mama * 4"
-	parts := strings.SplitN(str1, " * ", 2)
+func calc3(saving_the_string string) string {
+	parts := strings.SplitN(saving_the_string, " * ", 2)
 	if len(parts) != 2 {
-		panic("Error")
+		panic("Ошибка связана с количеством частей в calc3")
 	}
 
 	fs := parts[0]
@@ -64,7 +98,7 @@ func calc3() string {
 
 	ss_to_num, err := strconv.Atoi(ss)
 	if err != nil {
-		panic("Error")
+		panic("Ошибка связана с конвертацией")
 	}
 
 	var res string
@@ -75,12 +109,10 @@ func calc3() string {
 }
 
 // деление
-func calc4() string {
-	str1 := "Never give up / 4"
-	parts := strings.SplitN(str1, " / ", 2)
-
+func calc4(saving_the_string string) string {
+	parts := strings.SplitN(saving_the_string, " / ", 2)
 	if len(parts) != 2 {
-		panic("Error")
+		panic("Ошибка связана с количеством частей в calc4")
 	}
 
 	fs := parts[0]
@@ -89,16 +121,15 @@ func calc4() string {
 	v_fs := len(fs)
 
 	c_ss, err := strconv.Atoi(ss)
-
 	if err != nil {
-		panic("Error")
+		panic("Ошибка конвертации в calc4")
 	}
 
 	if c_ss == 0 {
-		panic("Error")
+		panic("Деление на ноль")
 	}
 
 	pre_res := v_fs / c_ss
-	res := str1[:pre_res]
+	res := fs[:pre_res]
 	return res
 }
