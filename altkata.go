@@ -19,8 +19,9 @@ func main() {
 		saving_the_string, err := string_request.ReadString('\n')
 		saving_the_string = strings.TrimSpace(saving_the_string)
 
-		if len(saving_the_string) > 10 {
-			panic("Ошибка. Строка длинее 10 символов")
+		if saving_the_string == "exit" {
+			fmt.Println("Have a good day, man (i hate girls)")
+			os.Exit(0)
 		}
 
 		if err != nil {
@@ -38,18 +39,20 @@ func main() {
 			panic("Ошибка связана с количеством частей")
 		}
 
+		// fmt.Println("Проверка, что есть части для программы?", parts[0], "_", parts[1])
+
 		switch operator {
 		case " + ":
-			answer := calc1(saving_the_string)
+			answer := calc1(parts)
 			fmt.Println(answer)
 		case " - ":
-			answer := calc2(saving_the_string)
+			answer := calc2(parts)
 			fmt.Println(answer)
 		case " * ":
-			answer := calc3(saving_the_string)
+			answer := calc3(parts)
 			fmt.Println(answer)
 		case " / ":
-			answer := calc4(saving_the_string)
+			answer := calc4(parts)
 			fmt.Println(answer)
 		default:
 			fmt.Println("Неизвестный оператор")
@@ -68,41 +71,54 @@ func check_operators(saving_the_string string, operators []string) ([]string, st
 }
 
 // конкатенация
-func calc1(saving_the_string string) string {
-	parts := strings.SplitN(saving_the_string, " + ", 2)
-	if len(parts) != 2 {
-		panic("Ошибка связана с количеством частей в calc1")
-	}
+func calc1(parts []string) string {
+
 	fs := parts[0]
 	ss := parts[1]
+
+	fs = strings.TrimSpace(fs)
+	ss = strings.TrimSpace(ss)
+
+	if len(fs) > 10 || len(ss) > 10 {
+		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		panic("Error")
+	}
 
 	res := fs + " " + ss
 	return res
 }
 
 // вычитание
-func calc2(saving_the_string string) string {
-	parts := strings.SplitN(saving_the_string, " - ", 2)
-	if len(parts) != 2 {
-		panic("Ошибка связана с количеством частей в calc2")
-	}
+func calc2(parts []string) string {
 
 	fs := parts[0]
 	ss := parts[1]
+
+	fs = strings.TrimSpace(fs)
+	ss = strings.TrimSpace(ss)
+
+	if len(fs) > 10 || len(ss) > 10 {
+		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		panic("Error")
+	}
 
 	res := strings.Replace(fs, ss, "", -1)
 	return res
 }
 
 // умножение
-func calc3(saving_the_string string) string {
-	parts := strings.SplitN(saving_the_string, " * ", 2)
-	if len(parts) != 2 {
-		panic("Ошибка связана с количеством частей в calc3")
-	}
+func calc3(parts []string) string {
 
 	fs := parts[0]
 	ss := parts[1]
+
+	fs = strings.TrimSpace(fs)
+	ss = strings.TrimSpace(ss)
+
+	if len(fs) > 10 || len(ss) > 10 {
+		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		panic("Error")
+	}
 
 	ss_to_num, err := strconv.Atoi(ss)
 	if err != nil {
@@ -125,14 +141,18 @@ func calc3(saving_the_string string) string {
 }
 
 // деление
-func calc4(saving_the_string string) string {
-	parts := strings.SplitN(saving_the_string, " / ", 2)
-	if len(parts) != 2 {
-		panic("Ошибка связана с количеством частей в calc4")
-	}
+func calc4(parts []string) string {
 
 	fs := parts[0]
 	ss := parts[1]
+
+	fs = strings.TrimSpace(fs)
+	ss = strings.TrimSpace(ss)
+
+	if len(fs) > 10 || len(ss) > 10 {
+		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		panic("Error")
+	}
 
 	v_fs := len(fs)
 
