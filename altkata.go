@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// тест проекта на другом пк
 var max_length = 40
 
 func main() {
