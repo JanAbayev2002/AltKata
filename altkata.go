@@ -45,16 +45,16 @@ func main() {
 		switch operator {
 		case " + ":
 			answer := calc1(parts)
-			fmt.Println(answer)
+			fmt.Println("\"" + answer + "\"")
 		case " - ":
 			answer := calc2(parts)
-			fmt.Println(answer)
+			fmt.Println("\"" + answer + "\"")
 		case " * ":
 			answer := calc3(parts)
-			fmt.Println(answer)
+			fmt.Println("\"" + answer + "\"")
 		case " / ":
 			answer := calc4(parts)
-			fmt.Println(answer)
+			fmt.Println("\"" + answer + "\"")
 		default:
 			fmt.Println("Неизвестный оператор")
 		}
