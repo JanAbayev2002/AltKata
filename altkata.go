@@ -30,6 +30,12 @@ func main() {
 		}
 
 		operators := []string{" + ", " - ", " * ", " / "}
+		operatorCount := count_operators(saving_the_string, operators)
+
+		if operatorCount > 1 {
+			panic("Ошибка: в выражении найдено более одного оператора")
+		}
+
 		parts, operator := check_operators(saving_the_string, operators)
 
 		if operator == "" {
@@ -40,7 +46,20 @@ func main() {
 			panic("Ошибка связана с количеством частей")
 		}
 
-		// fmt.Println("Проверка, что есть части для программы?", parts[0], "_", parts[1])
+		if operator == " + " || operator == " - " {
+			if !check_quotes(parts) {
+				panic("Ошибка: обе части выражения должны быть в двойных кавычках")
+			}
+
+			parts[0] = strings.Trim(parts[0], "\"")
+			parts[1] = strings.Trim(parts[1], "\"")
+		} else {
+			if !strings.HasPrefix(parts[0], "\"") || !strings.HasSuffix(parts[0], "\"") {
+				panic("Ошибка: первая часть выражения должна быть в двойных кавычках")
+			}
+
+			parts[0] = strings.Trim(parts[0], "\"")
+		}
 
 		switch operator {
 		case " + ":
@@ -61,7 +80,16 @@ func main() {
 	}
 }
 
-// поиск операторов в введенной строке
+// Подсчет операторов в введенной строке
+func count_operators(saving_the_string string, operators []string) int {
+	count := 0
+	for _, operator := range operators {
+		count += strings.Count(saving_the_string, operator)
+	}
+	return count
+}
+
+// Поиск операторов в введенной строке
 func check_operators(saving_the_string string, operators []string) ([]string, string) {
 	for _, operator := range operators {
 		if strings.Contains(saving_the_string, operator) {
@@ -71,17 +99,19 @@ func check_operators(saving_the_string string, operators []string) ([]string, st
 	return []string{saving_the_string}, ""
 }
 
-// конкатенация
+// Проверка наличия двойных кавычек
+func check_quotes(parts []string) bool {
+	return strings.HasPrefix(parts[0], "\"") && strings.HasSuffix(parts[0], "\"") &&
+		strings.HasPrefix(parts[1], "\"") && strings.HasSuffix(parts[1], "\"")
+}
+
+// Конкатенация
 func calc1(parts []string) string {
-
-	fs := parts[0]
-	ss := parts[1]
-
-	fs = strings.TrimSpace(fs)
-	ss = strings.TrimSpace(ss)
+	fs := strings.TrimSpace(parts[0])
+	ss := strings.TrimSpace(parts[1])
 
 	if len(fs) > 10 || len(ss) > 10 {
-		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		fmt.Printf("Строки длиннее 10 символов: |%s||%s|\n", fs, ss)
 		panic("Error")
 	}
 
@@ -89,17 +119,13 @@ func calc1(parts []string) string {
 	return res
 }
 
-// вычитание
+// Вычитание
 func calc2(parts []string) string {
-
-	fs := parts[0]
-	ss := parts[1]
-
-	fs = strings.TrimSpace(fs)
-	ss = strings.TrimSpace(ss)
+	fs := strings.TrimSpace(parts[0])
+	ss := strings.TrimSpace(parts[1])
 
 	if len(fs) > 10 || len(ss) > 10 {
-		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+		fmt.Printf("Строки длиннее 10 символов: |%s||%s|\n", fs, ss)
 		panic("Error")
 	}
 
@@ -107,17 +133,13 @@ func calc2(parts []string) string {
 	return res
 }
 
-// умножение
+// Умножение
 func calc3(parts []string) string {
+	fs := strings.TrimSpace(parts[0])
+	ss := strings.TrimSpace(parts[1])
 
-	fs := parts[0]
-	ss := parts[1]
-
-	fs = strings.TrimSpace(fs)
-	ss = strings.TrimSpace(ss)
-
-	if len(fs) > 10 || len(ss) > 10 {
-		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+	if len(fs) > 10 {
+		fmt.Printf("Первая строка длиннее 10 символов: |%s|\n", fs)
 		panic("Error")
 	}
 
@@ -141,17 +163,13 @@ func calc3(parts []string) string {
 	return res
 }
 
-// деление
+// Деление
 func calc4(parts []string) string {
+	fs := strings.TrimSpace(parts[0])
+	ss := strings.TrimSpace(parts[1])
 
-	fs := parts[0]
-	ss := parts[1]
-
-	fs = strings.TrimSpace(fs)
-	ss = strings.TrimSpace(ss)
-
-	if len(fs) > 10 || len(ss) > 10 {
-		fmt.Printf("Строки длиннеее 10 символов"+"|%s||%s|\n", fs, ss)
+	if len(fs) > 10 {
+		fmt.Printf("Первая строка длиннее 10 символов: |%s|\n", fs)
 		panic("Error")
 	}
 
